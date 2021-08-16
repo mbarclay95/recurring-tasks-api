@@ -4,10 +4,11 @@ import cors from "cors";
 import {Controller} from "./controllers/controller";
 import {TasksController} from "./controllers/tasks-controller";
 import {RecurringTasksController} from "./controllers/recurring-tasks-controller";
+import {PORT} from "../env";
 
 export class Server {
     app: express.Application;
-    port: number = 4000;
+    port: number = PORT;
 
     constructor() {
         this.app = express();
@@ -33,8 +34,6 @@ export class Server {
     }
 
     listen() {
-        this.app.listen(this.port, () => {
-            console.log(`App listening on the port ${this.port}`);
-        });
+        this.app.listen(this.port);
     }
 }
