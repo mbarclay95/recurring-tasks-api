@@ -1,6 +1,8 @@
 /node_modules
 /dist
 
+./src/database.ts
+
 # IDEs and editors
 /.idea
 .project
