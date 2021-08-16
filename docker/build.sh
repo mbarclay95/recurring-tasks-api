@@ -5,7 +5,7 @@ set -euf -o pipefail
 
 # get a hash from current git
 TAG_HASH=$(/usr/bin/git log -1 --pretty=%h)
-REPO=registry.home.com:5000/recurring-tasks-nodecd
+REPO=registry.home.com:5000/recurring-tasks-node
 
 echo "Building for: $TAG_HASH"
 
