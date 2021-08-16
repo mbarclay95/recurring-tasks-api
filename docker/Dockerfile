@@ -10,6 +10,8 @@ RUN npm install
 COPY . .
 RUN npm run build
 
+COPY . .
+
 ENV NODE_ENV production
 CMD [ "node", "dist/index.js" ]
 USER node
