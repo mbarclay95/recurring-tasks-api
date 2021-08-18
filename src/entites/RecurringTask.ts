@@ -36,11 +36,14 @@ export class RecurringTask extends BaseEntity {
     priority!: number;
 
     @Column({nullable: true, type: 'jsonb', array: false})
-    taskMetadata!: Array<{
+    taskMetadata!: {
         weekdays?: number[],
         monthDays?: number[],
         yearDays?: Date[],
-    }>;
+        everyNDays?: number;
+        everyNWeeks?: number;
+        everyNMonths?: number;
+    };
 
     @OneToMany(() => Task, task => task.recurringTask)
     tasks: Task[];

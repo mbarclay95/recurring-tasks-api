@@ -4,7 +4,7 @@ import cors from "cors";
 import {Controller} from "./controllers/controller";
 import {TasksController} from "./controllers/tasks-controller";
 import {RecurringTasksController} from "./controllers/recurring-tasks-controller";
-import {PORT} from "../env";
+import {PORT} from "./env";
 
 export class Server {
     app: express.Application;

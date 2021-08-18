@@ -14,7 +14,7 @@ export class TasksController extends Controller {
     }
 
     index = async (request: express.Request, response: express.Response) => {
-        let today = dayjs().format('YYYY-MM-DD');
+        let today = dayjs().tz('America/Los_Angeles').format('YYYY-MM-DD');
 
         let tasks = await getConnection()
             .getRepository(Task)
@@ -45,7 +45,7 @@ export class TasksController extends Controller {
                     title: request.body.title,
                     priority: request.body.priority,
                     description: request.body.description ?? null,
-                    scheduledAt: request.body.scheduledAt ?? new Date()
+                    scheduledAt: request.body.scheduledAt ?? dayjs().tz('America/Los_Angeles').format('YYYY-MM-DD')
                 }
             ])
             .returning('*')

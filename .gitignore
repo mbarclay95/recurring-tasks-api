@@ -11,4 +11,4 @@
 .settings/
 *.sublime-workspace
 
-env.ts
+src/env.ts

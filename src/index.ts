@@ -1,12 +1,12 @@
 import "reflect-metadata";
 import {Server} from "./server";
 import {Database} from "./database";
-import {Cron} from "./cron";
 import {Timezone} from "./timezone";
+import {Cron} from "./cron";
 
 const main = async () => {
     await Database.initConnection();
-    // Cron.run();
+    Cron.initCron();
     Timezone.initTimezone();
 
     const server = new Server();

@@ -11,7 +11,7 @@ export class RecurringTasksController extends Controller {
     initializeRoutes() {
         this.router.get(this.path, this.index);
         this.router.post(this.path, this.store);
-        // this.router.patch(`${this.path}/:taskId`, this.update);
+        this.router.patch(`${this.path}/:recurringTaskId`, this.update);
     }
 
     index = async (request: express.Request, response: express.Response) => {
@@ -46,16 +46,15 @@ export class RecurringTasksController extends Controller {
     }
 
     update = async (request: express.Request, response: express.Response) => {
-        const result = await getConnection()
+        await getConnection()
             .createQueryBuilder()
-            .update(Task)
+            .update(RecurringTask)
             .set(request.body)
-            .where("id = :id", {id: request.params.taskId})
-            .returning('*')
+            .where("id = :id", {id: request.params.recurringTaskId})
             .execute();
 
-        const task = await Task.findOne(request.params.taskId);
+        const recurringTask = await RecurringTask.findOne(request.params.recurringTaskId);
 
-        response.json(task);
+        response.json(recurringTask);
     }
 }

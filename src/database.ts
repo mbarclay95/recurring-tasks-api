@@ -2,7 +2,8 @@ import {createConnection} from "typeorm";
 import {Task} from "./entites/Task";
 import {RecurringTask} from "./entites/RecurringTask";
 import {SnakeNamingStrategy} from "typeorm-naming-strategies";
-import {DB_HOST, DB_PASSWORD, DB_USER} from "../env";
+import {DB_HOST, DB_PASSWORD, DB_USER} from "./env";
+import {__prod__} from "./constants";
 
 export class Database {
 
@@ -13,7 +14,7 @@ export class Database {
             database: 'recurring_tasks_node',
             username: DB_USER,
             password: DB_PASSWORD,
-            logging: false,
+            logging: !__prod__,
             synchronize: false,
             entities: [Task, RecurringTask],
             namingStrategy: new SnakeNamingStrategy(),
