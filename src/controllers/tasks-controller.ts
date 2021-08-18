@@ -28,7 +28,7 @@ export class TasksController extends Controller {
             .getMany();
 
         tasks = tasks.map(task => {
-            task.scheduledAt = dayjs(task.scheduledAt).toDate();
+            task.scheduledAt = dayjs(task.scheduledAt).tz('America/Los_Angeles').toDate();
             return task;
         });
 
@@ -66,7 +66,7 @@ export class TasksController extends Controller {
 
         const task = await Task.findOne(request.params.taskId);
         if (task) {
-            task.scheduledAt = dayjs(task?.scheduledAt).toDate();
+            task.scheduledAt = dayjs(task?.scheduledAt).tz('America/Los_Angeles').toDate();
         }
 
         response.json(task);
