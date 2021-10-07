@@ -8,7 +8,7 @@ import {Task} from "./entites/Task";
 export class Cron {
 
     static initCron() {
-        cron.schedule("* 0 21 * * *", () => {
+        cron.schedule("0 0 4 * * *", () => {
             this.run();
         });
     }

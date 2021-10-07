@@ -57,6 +57,9 @@ export class TasksController extends Controller {
     }
 
     update = async (request: express.Request, response: express.Response) => {
+        if (!!request.body.completed_at) {
+            request.body.completed_at = dayjs(request.body.completed_at).tz('America/Los_Angeles').toDate();
+        }
         await getConnection()
             .createQueryBuilder()
             .update(Task)
