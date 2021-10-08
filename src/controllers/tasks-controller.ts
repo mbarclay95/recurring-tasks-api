@@ -15,6 +15,7 @@ export class TasksController extends Controller {
 
     index = async (request: express.Request, response: express.Response) => {
         let today = dayjs().tz('America/Los_Angeles').format('YYYY-MM-DD');
+        let todayUtc = dayjs().format('YYYY-MM-DD');
 
         let tasks = await getConnection()
             .getRepository(Task)
@@ -22,7 +23,7 @@ export class TasksController extends Controller {
             .where('task.scheduled_at <= :date', {date: today})
             .andWhere(new Brackets(query => {
                 query.orWhere('task.completed_at IS NULL')
-                    .orWhere('DATE(task.completed_at) = :today', {today: today})
+                    .orWhere('DATE(task.completed_at) = :today', {today: todayUtc});
             }))
             .andWhere('task.cleared_at IS NULL')
             .getMany();
@@ -57,9 +58,6 @@ export class TasksController extends Controller {
     }
 
     update = async (request: express.Request, response: express.Response) => {
-        if (!!request.body.completed_at) {
-            request.body.completed_at = dayjs(request.body.completed_at).tz('America/Los_Angeles').toDate();
-        }
         await getConnection()
             .createQueryBuilder()
             .update(Task)
