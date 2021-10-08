@@ -2,6 +2,9 @@
 FROM node:lts-alpine as build-stage
 WORKDIR /usr/src/app
 
+RUN apk add --no-cache tzdata
+ENV TZ America/Los_Angeles
+
 COPY package.json ./
 COPY package-lock.json ./
 
