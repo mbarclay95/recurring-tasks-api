@@ -1,8 +1,6 @@
 import {Controller} from './controller';
 import express from "express";
 import {getConnection} from "typeorm";
-import {Task} from "../entites/Task";
-import dayjs from "dayjs";
 import {RecurringTask} from "../entites/RecurringTask";
 
 export class RecurringTasksController extends Controller {
@@ -12,6 +10,7 @@ export class RecurringTasksController extends Controller {
         this.router.get(this.path, this.index);
         this.router.post(this.path, this.store);
         this.router.patch(`${this.path}/:recurringTaskId`, this.update);
+        this.router.delete(`${this.path}/:recurringTaskId`, this.destroy);
     }
 
     index = async (request: express.Request, response: express.Response) => {
@@ -56,5 +55,16 @@ export class RecurringTasksController extends Controller {
         const recurringTask = await RecurringTask.findOne(request.params.recurringTaskId);
 
         response.json(recurringTask);
+    }
+
+    destroy = async (request: express.Request, response: express.Response) => {
+        await getConnection()
+            .getRepository(RecurringTask)
+            .createQueryBuilder()
+            .where("id = :id", {id: request.params.recurringTaskId})
+            .softDelete()
+            .execute();
+
+        response.json({success: true});
     }
 }

@@ -14,18 +14,33 @@ export class TasksController extends Controller {
     }
 
     index = async (request: express.Request, response: express.Response) => {
-        let today = dayjs().tz('America/Los_Angeles').format('YYYY-MM-DD');
+        const queryParams = request.query;
+        let tasks: Task[] = [];
 
-        let tasks = await getConnection()
-            .getRepository(Task)
-            .createQueryBuilder('task')
-            .where('task.scheduled_at <= :date', {date: today})
-            .andWhere(new Brackets(query => {
-                query.orWhere('task.completed_at IS NULL')
-                    .orWhere('DATE(task.completed_at) = :today', {today: today});
-            }))
-            .andWhere('task.cleared_at IS NULL')
-            .getMany();
+        if (!!queryParams.recurringTaskId) {
+            tasks = await getConnection()
+                .getRepository(Task)
+                .createQueryBuilder('task')
+                .where('task.recurring_task_id = :recurringTaskId', {recurringTaskId: queryParams.recurringTaskId})
+                .andWhere(new Brackets(query => {
+                    query.orWhere('task.completed_at IS NOT NULL')
+                        .orWhere('task.cleared_at IS NOT NULL');
+                }))
+                .getMany();
+        } else {
+            let today = dayjs().tz('America/Los_Angeles').format('YYYY-MM-DD');
+
+            tasks = await getConnection()
+                .getRepository(Task)
+                .createQueryBuilder('task')
+                .where('task.scheduled_at <= :date', {date: today})
+                .andWhere(new Brackets(query => {
+                    query.orWhere('task.completed_at IS NULL')
+                        .orWhere('DATE(task.completed_at) = :today', {today: today});
+                }))
+                .andWhere('task.cleared_at IS NULL')
+                .getMany();
+        }
 
         tasks = tasks.map(task => {
             task.scheduledAt = dayjs(task.scheduledAt).tz('America/Los_Angeles').toDate();

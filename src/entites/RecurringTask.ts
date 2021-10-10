@@ -2,7 +2,7 @@ import {ObjectType} from "type-graphql";
 import {
     BaseEntity,
     Column,
-    CreateDateColumn,
+    CreateDateColumn, DeleteDateColumn,
     Entity,
     OneToMany,
     PrimaryGeneratedColumn,
@@ -22,6 +22,9 @@ export class RecurringTask extends BaseEntity {
 
     @UpdateDateColumn()
     updatedAt: Date;
+
+    @DeleteDateColumn()
+    deletedAt?: Date;
 
     @Column()
     title!: string;
